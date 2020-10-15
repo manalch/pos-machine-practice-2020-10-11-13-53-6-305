@@ -1,22 +1,22 @@
 package pos.machine;
 
-public class ReceiptInfoHelper {
+public class ReceiptInfoBuilder {
     private ItemInfo itemInfo;
     private int quantity;
 
-    public ReceiptInfoHelper() {
+    public ReceiptInfoBuilder() {
     }
 
-    public static ReceiptInfoHelper of() {
-        return new ReceiptInfoHelper();
+    public static ReceiptInfoBuilder of() {
+        return new ReceiptInfoBuilder();
     }
 
-    public ReceiptInfoHelper setItemInfo(ItemInfo itemInfo) {
+    public ReceiptInfoBuilder setItemInfo(ItemInfo itemInfo) {
         this.itemInfo = itemInfo;
         return this;
     }
 
-    public ReceiptInfoHelper setQuantity(int quantity) {
+    public ReceiptInfoBuilder setQuantity(int quantity) {
         this.quantity = quantity;
         return this;
     }

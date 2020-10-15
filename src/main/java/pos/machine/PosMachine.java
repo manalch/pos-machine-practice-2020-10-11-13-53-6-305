@@ -3,6 +3,7 @@ package pos.machine;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class PosMachine {
@@ -25,20 +26,19 @@ public class PosMachine {
         barcodes.stream()
                 .distinct()
                 .forEachOrdered(barcode -> {
+                    Predicate<ItemInfo> byBarcode = itemInfo -> barcode.equals(itemInfo.getBarcode());
                     itemInfos.stream()
-                            .filter(itemInfo -> itemInfo.getBarcode().equals(barcode))
-                            .forEach(itemInfo -> {
-                                ReceiptInfo receiptInfo = buildReceiptInfoDetails(itemInfo
-                                        , Collections.frequency(barcodes, barcode));
-
-                                total += receiptInfo.getSubTotal();
-                                receiptInfos.add(receiptInfo);
-                            });
+                            .filter(byBarcode)
+                            .map(itemInfo -> buildReceiptInfoDetails(itemInfo, Collections.frequency(barcodes, barcode)))
+                            .forEach(receiptInfo -> {
+                        total += receiptInfo.getSubTotal();
+                        receiptInfos.add(receiptInfo);
+                    });
                 });
     }
 
     private ReceiptInfo buildReceiptInfoDetails(ItemInfo itemInfo, int quantity) {
-        return ReceiptInfoHelper.of()
+        return ReceiptInfoBuilder.of()
                 .setItemInfo(itemInfo)
                 .setQuantity(quantity)
                 .build();
